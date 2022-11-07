@@ -4,29 +4,25 @@ import 'package:todo_app_dengan_advanced_provider/models/todo_models.dart';
 import 'package:todo_app_dengan_advanced_provider/providers/todo_list.dart';
 
 class ActiveTodoCountState extends Equatable {
-  final int activeTodoCount; //todo 1
+  final int activeTodoCount;
 
-  //todo 2
   const ActiveTodoCountState({
     required this.activeTodoCount,
   });
 
-  //todo 6 init awal
-  factory ActiveTodoCountState.initial() {
-    return const ActiveTodoCountState(
-      activeTodoCount: 0,
-    );
-  }
+  //todo 1 remove initial ini
+  // factory ActiveTodoCountState.initial() {
+  //   return const ActiveTodoCountState(
+  //     activeTodoCount: 0,
+  //   );
+  // }
 
-  //todo 3 equatable
   @override
   List<Object?> get props => [activeTodoCount];
 
-  // todo 4 toString
   @override
   bool get stringify => true;
 
-  //todo 5 copyWith
   ActiveTodoCountState copyWith({
     required int? activeTodoCount,
   }) {
@@ -36,13 +32,19 @@ class ActiveTodoCountState extends Equatable {
   }
 }
 
-//todo 7
 class ActiveTodoCount with ChangeNotifier {
-  //todo 8
-  ActiveTodoCountState _state = ActiveTodoCountState.initial();
+  //todo 2
+  late ActiveTodoCountState _state;
+  final int initialActiveTodoCount;
+
+  //todo 3 (next filtered_todos) inital
+  ActiveTodoCount({required this.initialActiveTodoCount}) {
+    _state = ActiveTodoCountState(
+      activeTodoCount: initialActiveTodoCount,
+    );
+  }
   ActiveTodoCountState get state => _state;
 
-  //todo 9 (finish)
   void update(TodoList todoList) {
     print(todoList.state);
     final int newActiveTodoCount = todoList.state.todos

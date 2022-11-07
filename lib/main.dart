@@ -14,21 +14,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        //todo 2
         ChangeNotifierProvider<TodoFilter>(
           create: (_) => TodoFilter(),
         ),
-        //todo 3
         ChangeNotifierProvider<TodoList>(
           create: (_) => TodoList(),
         ),
-        //todo 4
         ChangeNotifierProvider<TodoSearch>(
           create: (_) => TodoSearch(),
         ),
-        //todo 5
         ChangeNotifierProxyProvider<TodoList, ActiveTodoCount>(
-          create: (context) => ActiveTodoCount(),
+          create: (context) => ActiveTodoCount(
+            initialActiveTodoCount:
+                context.read<TodoList>().state.todos.length, //todo 7
+          ),
           update: (
             BuildContext context,
             TodoList todoList,
@@ -36,10 +35,12 @@ class MyApp extends StatelessWidget {
           ) =>
               activeTodoCount!..update(todoList),
         ),
-        //todo 6 (finish)
         ChangeNotifierProxyProvider3<TodoFilter, TodoSearch, TodoList,
             FilteredTodos>(
-          create: (context) => FilteredTodos(),
+          create: (context) => FilteredTodos(
+            initialTodoList:
+                context.read<TodoList>().state.todos, //todo 8 (finish)
+          ),
           update: (
             BuildContext context,
             TodoFilter todoFilter,

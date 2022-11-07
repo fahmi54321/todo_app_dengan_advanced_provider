@@ -6,29 +6,25 @@ import 'package:todo_app_dengan_advanced_provider/providers/todo_list.dart';
 import 'package:todo_app_dengan_advanced_provider/providers/todo_search.dart';
 
 class FilteredTodosState extends Equatable {
-  final List<Todo> filteredTodos; //todo 1
+  final List<Todo> filteredTodos;
 
-  //todo 2
   FilteredTodosState({
     required this.filteredTodos,
   });
 
-  //todo 6
-  factory FilteredTodosState.initial() {
-    return FilteredTodosState(
-      filteredTodos: const [],
-    );
-  }
+  //todo 4 remove initial ini
+  // factory FilteredTodosState.initial() {
+  //   return FilteredTodosState(
+  //     filteredTodos: const [],
+  //   );
+  // }
 
-  //todo 3 equatable
   @override
   List<Object?> get props => [];
 
-  //todo 4 toString
   @override
   bool get stringify => true;
 
-  //todo 5 copyWith
   FilteredTodosState copyWith({required List<Todo>? filteredTodos}) {
     return FilteredTodosState(
       filteredTodos: filteredTodos ?? this.filteredTodos,
@@ -36,13 +32,21 @@ class FilteredTodosState extends Equatable {
   }
 }
 
-//todo 7
 class FilteredTodos with ChangeNotifier {
-  //todo 8
-  FilteredTodosState _state = FilteredTodosState.initial();
+  //todo 5
+  late FilteredTodosState _state;
+  final List<Todo> initialTodoList;
+
+  //todo 6 (next main.dart)
+  FilteredTodos({
+    required this.initialTodoList,
+  }) {
+    _state = FilteredTodosState(
+      filteredTodos: initialTodoList,
+    );
+  }
   FilteredTodosState get state => _state;
 
-  //todo 9 (finish)
   void update({
     required TodoFilter todoFilter,
     required TodoSearch todoSearch,
