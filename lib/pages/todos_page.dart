@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_dengan_advanced_provider/models/todo_models.dart';
 import 'package:todo_app_dengan_advanced_provider/providers/provider.dart';
+import 'package:todo_app_dengan_advanced_provider/utils/debounce.dart';
 
 class TodosPage extends StatefulWidget {
   const TodosPage({super.key});
@@ -22,10 +23,10 @@ class _TodosPageState extends State<TodosPage> {
               vertical: 40.0,
             ),
             child: Column(
-              children: const [
+              children: [
                 TodoHeader(),
                 CreateTodo(),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 SearchAndFilterTodo(),
                 ShowTodos(),
               ],
@@ -93,7 +94,10 @@ class _CreateTodoState extends State<CreateTodo> {
 }
 
 class SearchAndFilterTodo extends StatelessWidget {
-  const SearchAndFilterTodo({Key? key}) : super(key: key);
+  SearchAndFilterTodo({Key? key}) : super(key: key);
+
+  //todo 2
+  final debounce = Debounce(milliseconds: 1000);
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +112,10 @@ class SearchAndFilterTodo extends StatelessWidget {
           ),
           onChanged: (String? newSearchTerm) {
             if (newSearchTerm != null) {
-              context.read<TodoSearch>().setSearchTerm(newSearchTerm);
+              //todo 3 (finish)
+              debounce.run(() {
+                context.read<TodoSearch>().setSearchTerm(newSearchTerm);
+              });
             }
           },
         ),
@@ -180,7 +187,8 @@ class ShowTodos extends StatelessWidget {
           secondaryBackground: showBackground(1),
           key: ValueKey(todos[index].id),
           onDismissed: (_) {
-            context.read<TodoList>().removeTodo( //todo 2
+            context.read<TodoList>().removeTodo(
+                  //todo 2
                   todos[index],
                 );
           },
@@ -282,7 +290,8 @@ class _TodoItemState extends State<TodoItem> {
                                 ? true
                                 : false;
 
-                            if (!error) { //todo 3
+                            if (!error) {
+                              //todo 3
                               context.read<TodoList>().editTodo(
                                     widget.todo.id,
                                     textEditingController.text,
@@ -301,7 +310,8 @@ class _TodoItemState extends State<TodoItem> {
       },
       leading: Checkbox(
         value: widget.todo.completed,
-        onChanged: (bool? checked) { //todo 4 (finish)
+        onChanged: (bool? checked) {
+          //todo 4 (finish)
           context.read<TodoList>().toggleTodo(
                 widget.todo.id,
               );
