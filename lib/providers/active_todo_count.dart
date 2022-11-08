@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:todo_app_dengan_advanced_provider/models/todo_models.dart';
 import 'package:todo_app_dengan_advanced_provider/providers/todo_list.dart';
 
@@ -9,13 +8,6 @@ class ActiveTodoCountState extends Equatable {
   const ActiveTodoCountState({
     required this.activeTodoCount,
   });
-
-  //todo 1 remove initial ini
-  // factory ActiveTodoCountState.initial() {
-  //   return const ActiveTodoCountState(
-  //     activeTodoCount: 0,
-  //   );
-  // }
 
   @override
   List<Object?> get props => [activeTodoCount];
@@ -32,30 +24,45 @@ class ActiveTodoCountState extends Equatable {
   }
 }
 
-class ActiveTodoCount with ChangeNotifier {
-  //todo 2
-  late ActiveTodoCountState _state;
-  final int initialActiveTodoCount;
+//todo 2 (hapus ini)
 
-  //todo 3 (next filtered_todos) inital
-  ActiveTodoCount({required this.initialActiveTodoCount}) {
-    _state = ActiveTodoCountState(
-      activeTodoCount: initialActiveTodoCount,
-    );
-  }
-  ActiveTodoCountState get state => _state;
+// class ActiveTodoCount with ChangeNotifier {
+//   late ActiveTodoCountState _state;
+//   final int initialActiveTodoCount;
 
-  void update(TodoList todoList) {
-    print(todoList.state);
-    final int newActiveTodoCount = todoList.state.todos
-        .where((Todo todo) => !todo.completed)
-        .toList()
-        .length;
+//   ActiveTodoCount({required this.initialActiveTodoCount}) {
+//     _state = ActiveTodoCountState(
+//       activeTodoCount: initialActiveTodoCount,
+//     );
+//   }
+//   ActiveTodoCountState get state => _state;
 
-    _state = _state.copyWith(
-      activeTodoCount: newActiveTodoCount,
-    );
-    print(state);
-    notifyListeners();
-  }
+//   void update(TodoList todoList) {
+//     print(todoList.state);
+//     final int newActiveTodoCount = todoList.state.todos
+//         .where((Todo todo) => !todo.completed)
+//         .toList()
+//         .length;
+
+//     _state = _state.copyWith(
+//       activeTodoCount: newActiveTodoCount,
+//     );
+//     print(state);
+//     notifyListeners();
+//   }
+// }
+
+//todo 3 ganti dengan (next filtered_todos)
+class ActiveTodoCount {
+  final TodoList todoList;
+  ActiveTodoCount({
+    required this.todoList,
+  });
+
+  ActiveTodoCountState get state => ActiveTodoCountState(
+        activeTodoCount: todoList.state.todos
+            .where((Todo todo) => !todo.completed)
+            .toList()
+            .length,
+      );
 }

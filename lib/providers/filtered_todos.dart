@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:todo_app_dengan_advanced_provider/models/todo_models.dart';
 import 'package:todo_app_dengan_advanced_provider/providers/todo_filter.dart';
 import 'package:todo_app_dengan_advanced_provider/providers/todo_list.dart';
@@ -11,13 +10,6 @@ class FilteredTodosState extends Equatable {
   FilteredTodosState({
     required this.filteredTodos,
   });
-
-  //todo 4 remove initial ini
-  // factory FilteredTodosState.initial() {
-  //   return FilteredTodosState(
-  //     filteredTodos: const [],
-  //   );
-  // }
 
   @override
   List<Object?> get props => [];
@@ -32,53 +24,104 @@ class FilteredTodosState extends Equatable {
   }
 }
 
-class FilteredTodos with ChangeNotifier {
-  //todo 5
-  late FilteredTodosState _state;
-  final List<Todo> initialTodoList;
+//todo 4 hapus ini
+// class FilteredTodos with ChangeNotifier {
+//   late FilteredTodosState _state;
+//   final List<Todo> initialTodoList;
 
-  //todo 6 (next main.dart)
+//   FilteredTodos({
+//     required this.initialTodoList,
+//   }) {
+//     _state = FilteredTodosState(
+//       filteredTodos: initialTodoList,
+//     );
+//   }
+//   FilteredTodosState get state => _state;
+
+//   void update({
+//     required TodoFilter todoFilter,
+//     required TodoSearch todoSearch,
+//     required TodoList todoList,
+//   }) {
+//     List<Todo> _filteredTodos;
+
+//     switch (todoFilter.state.filter) {
+//       case Filter.active:
+//         {
+//           _filteredTodos = todoList.state.todos
+//               .where((Todo todo) => !todo.completed)
+//               .toList();
+//         }
+//         break;
+//       case Filter.completed:
+//         {
+//           _filteredTodos = todoList.state.todos
+//               .where((Todo todo) => todo.completed)
+//               .toList();
+//         }
+//         break;
+//       default:
+//         {
+//           _filteredTodos = todoList.state.todos;
+//         }
+
+//         break;
+//     }
+
+//     if (todoSearch.state.searchTerm.isNotEmpty) {
+//       _filteredTodos = _filteredTodos
+//           .where(
+//             (Todo todo) => todo.desc.toLowerCase().contains(
+//                   todoSearch.state.searchTerm,
+//                 ),
+//           )
+//           .toList();
+//     }
+
+//     _state = _state.copyWith(filteredTodos: _filteredTodos);
+//     notifyListeners();
+//   }
+// }
+
+//todo 5 ganti dengan (next main.dart)
+class FilteredTodos {
+  final TodoList todoList;
+  final TodoSearch todoSearch;
+  final TodoFilter todoFilter;
+
   FilteredTodos({
-    required this.initialTodoList,
-  }) {
-    _state = FilteredTodosState(
-      filteredTodos: initialTodoList,
-    );
-  }
-  FilteredTodosState get state => _state;
+    required this.todoList,
+    required this.todoFilter,
+    required this.todoSearch,
+  });
 
-  void update({
-    required TodoFilter todoFilter,
-    required TodoSearch todoSearch,
-    required TodoList todoList,
-  }) {
-    List<Todo> _filteredTodos;
-
+  FilteredTodosState get state {
+    List<Todo> filteredTodos;
     switch (todoFilter.state.filter) {
       case Filter.active:
         {
-          _filteredTodos = todoList.state.todos
+          filteredTodos = todoList.state.todos
               .where((Todo todo) => !todo.completed)
               .toList();
         }
         break;
       case Filter.completed:
         {
-          _filteredTodos = todoList.state.todos
+          filteredTodos = todoList.state.todos
               .where((Todo todo) => todo.completed)
               .toList();
         }
         break;
+
       default:
         {
-          _filteredTodos = todoList.state.todos;
+          filteredTodos = todoList.state.todos;
         }
-
         break;
     }
 
     if (todoSearch.state.searchTerm.isNotEmpty) {
-      _filteredTodos = _filteredTodos
+      filteredTodos = filteredTodos
           .where(
             (Todo todo) => todo.desc.toLowerCase().contains(
                   todoSearch.state.searchTerm,
@@ -87,7 +130,8 @@ class FilteredTodos with ChangeNotifier {
           .toList();
     }
 
-    _state = _state.copyWith(filteredTodos: _filteredTodos);
-    notifyListeners();
+    return FilteredTodosState(
+      filteredTodos: filteredTodos,
+    );
   }
 }
